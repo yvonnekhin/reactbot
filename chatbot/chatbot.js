@@ -12,11 +12,13 @@ const credentials = {
     config.googlePrivateKey,
 };
 const sessionClient = new dialogflow.SessionsClient({projectId, credentials});
-const sessionPath = sessionClient.sessionPath(projectId, sessionId);
+
 module.exports = {
-    textQuery: async function(text, parameters = {}) {
-        // This is how we access another module exports method.
+    textQuery: async function(text, userID, parameters = {}) {
         let self = module.exports;
+        const sessionPath = sessionClient.sessionPath(projectId, sessionId + userID);
+        // This is how we access another module exports method.
+        
         const request = {
             session: sessionPath,
             queryInput: {
@@ -37,8 +39,10 @@ module.exports = {
 
     },
 
-    eventQuery: async function(event, parameters = {}) {
+    eventQuery: async function(event, userID, parameters = {}) {
         let self = module.exports;
+        const sessionPath = sessionClient.sessionPath(projectId, sessionId + userID);
+        
         const request = {
             session: sessionPath,
             queryInput: {
