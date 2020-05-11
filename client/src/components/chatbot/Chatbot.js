@@ -1,41 +1,35 @@
 import React, { Component } from 'react';
-import axios from 'axios/index';
+import axios from "axios/index";
 import Cookies from 'universal-cookie';
-import { v4 as uuid } from 'uuid'
-
+import { v4 as uuid } from 'uuid';
 import Message from './Message';
-
 const cookies = new Cookies();
-
 class Chatbot extends Component {
     messagesEnd;
     talkInput;
-    constructor(props){
+    constructor(props) {
         super(props);
+        // This binding is necessary to make `this` work in the callback
+        this._handleInputKeyPress = this._handleInputKeyPress.bind(this);
         this.state = {
             messages: []
         };
-        this._handleInputKeyPress = this._handleInputKeyPress.bind(this);
-
         if (cookies.get('userID') === undefined) {
             cookies.set('userID', uuid(), { path: '/' });
         }
-        console.log(cookies.get('userID'));
     }
-
-    async df_text_query (text) {
+    async df_text_query (queryText) {
         let says = {
             speaks: 'user',
             msg: {
                 text : {
-                    text: text
+                    text: queryText
                 }
             }
         }
         this.setState({ messages: [...this.state.messages, says]});
-        const res = await axios.post('/api/df_text_query',  {text: text, userID: cookies.get('userID')});
+        const res = await axios.post('/api/df_text_query',  {text: queryText, userID: cookies.get('userID')});
         for (let msg of res.data.fulfillmentMessages) {
-            console.log(JSON.stringify(msg));
             says = {
                 speaks: 'bot',
                 msg: msg
@@ -43,9 +37,8 @@ class Chatbot extends Component {
             this.setState({ messages: [...this.state.messages, says]});
         }
     };
-
-    async df_event_query(event) {
-        const res = await axios.post('/api/df_event_query',  {event: event, userID: cookies.get('userID')});
+    async df_event_query(eventName) {
+        const res = await axios.post('/api/df_event_query',  {event: eventName, userID: cookies.get('userID')});
         for (let msg of res.data.fulfillmentMessages) {
             let says = {
                 speaks: 'bot',
@@ -54,38 +47,35 @@ class Chatbot extends Component {
             this.setState({ messages: [...this.state.messages, says]});
         }
     };
-
     componentDidMount() {
         this.df_event_query('Welcome');
     }
-
     componentDidUpdate() {
-        this.messagesEnd.scrollIntoView({ behaviour: "smooth"});
+        this.messagesEnd.scrollIntoView({ behavior: "smooth" });
         this.talkInput.focus();
     }
+     renderMessages(returnedMessages) {
+         if (returnedMessages) {
+             return returnedMessages.map((message, i) => {
+                 if (message.msg && message.msg.text && message.msg.text.text) {
+                         return <Message key={i} speaks={message.speaks} text={message.msg.text.text}/>;
+                     } else {
+                         return <h2>Cards</h2>;
+                     }
 
-    renderMessages(stateMessages) {
-        if(stateMessages) {
-            return stateMessages.map((message, i) => {
-                if (message.msg && message.msg.text && message.msg.text.text) {
-                    return <Message key={i} speaks={message.speaks} text={message.msg.text.text}/>;
-                } else {
-                    return <h2>Cards</h2>;
-                }
-            });
-        } else {
+                 }
+             )
+         } else {
             return null;
         }
     }
-
     _handleInputKeyPress(e) {
-        if(e.key === 'Enter') {
+        if (e.key === 'Enter') {
             this.df_text_query(e.target.value);
             e.target.value = '';
         }
     }
-
-    render(){
+    render() {
         return (
             <div style={{height: 400, width: 400, float: 'right'}}>
                 <div id="chatbot" style={{height: '100%', width: '100%', overflow: 'auto'}}>
@@ -99,6 +89,5 @@ class Chatbot extends Component {
             </div>
         );
     }
-};
-
+}
 export default Chatbot;
