@@ -182,7 +182,7 @@ class Chatbot extends Component {
                         <div className="nav-wrapper">
                             <a href="/" className="brand-logo">ChatBot</a>
                             <ul id="nav-mobile" className="right hide-on-med-and-down">
-                                <li><a onClick={this.hide}>Close</a></li>
+                                <li><a href="/" onClick={this.hide}>Close</a></li>
                             </ul>
                         </div>
                     </nav>

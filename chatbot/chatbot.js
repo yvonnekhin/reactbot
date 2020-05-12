@@ -14,7 +14,7 @@ const credentials = {
 };
 const sessionClient = new dialogflow.SessionsClient({projectId, credentials});
 
-const Registration = mongoose.module('registration');
+const Registration = mongoose.model('registration');
 
 module.exports = {
     textQuery: async function(text, userID, parameters = {}) {
@@ -69,7 +69,7 @@ module.exports = {
         switch (queryResult.action) {
             case 'recommendcourses-yes':
                 if (queryResult.allRequiredParamsPresent) {
-
+                    self.saveRegistration(queryResult.parameters.fields);
                 }
                 break;
         }

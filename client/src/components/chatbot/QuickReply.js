@@ -4,7 +4,7 @@ const QuickReply = (props) => {
     // To check if object has payload or link to a page
     if(props.reply.structValue.fields.payload){
         return(
-            <a style={{ margin: 3 }} href="" className="btn-floating btn-large waves-effect waves-light red"
+            <a style={{ margin: 3 }} href="/" className="btn-floating btn-large waves-effect waves-light red"
             onClick={(event) =>
                 props.click(
                     event,
