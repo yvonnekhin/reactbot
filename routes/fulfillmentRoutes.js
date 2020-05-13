@@ -14,6 +14,10 @@ module.exports = app => {
         }
 
         async function learn(agent) {
+            agent.add(`Welcome to my Snoopy fulfillment!`);
+        }
+
+        function learn(agent) {
             Demand.findOne({'course': agent.parameters.courses}, function(err, course) {
                 console.log(course);
                 if (course !== null ) {
@@ -40,7 +44,7 @@ module.exports = app => {
             agent.add(`I didn't understand`);
             agent.add(`I'm sorry, can you try again?`);
         }
-
+      
         let intentMap = new Map();
         // intentMap.set('< Intent's name >', <method that will handle it>);
         intentMap.set('snoopy', snoopy);
