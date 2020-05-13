@@ -152,6 +152,7 @@ class Chatbot extends Component {
                 break;
             case 'training_masterclass':
                 this.df_event_query('MASTERCLASS');
+                break;
             default:
                 this.df_text_query(text);
                 break;
@@ -171,7 +172,7 @@ class Chatbot extends Component {
                 <div className="card-panel grey lighten-5 z-depth-1">
                     <div style={{overflow: 'hidden'}}>
                         <div className="col s2">
-                            <a href="/" className="btn-floating btn-large waves-effect waves-light red">{message.speaks}</a>
+                            <a href="/" className="btn-floating btn-large waves-effect waves-light blue">{message.speaks}</a>
                         </div>
                         <div style={{ overflow: 'auto', overflowY: 'scroll'}}>
                             <div style={{ height: 300, width:message.msg.payload.fields.cards.listValue.values.length * 270}}>

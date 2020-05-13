@@ -12,7 +12,7 @@ module.exports = app => {
             agent.add(`Welcome to my Snoopy fulfillment!`);
         }
 
-        function learn(agent) {
+        async function learn(agent) {
             Demand.findOne({'course': agent.parameters.courses}, function(err, course) {
                 console.log(course);
                 if (course !== null ) {
