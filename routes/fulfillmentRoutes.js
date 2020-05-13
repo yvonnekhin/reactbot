@@ -9,6 +9,11 @@ module.exports = app => {
         const agent = new WebhookClient({ request: req, response: res });
 
         function snoopy(agent) {
+            let text = 'Welcome to my Snoopy fulfillment!';
+            agent.add(text);
+        }
+
+        async function learn(agent) {
             agent.add(`Welcome to my Snoopy fulfillment!`);
         }
 
@@ -39,6 +44,7 @@ module.exports = app => {
             agent.add(`I didn't understand`);
             agent.add(`I'm sorry, can you try again?`);
         }
+      
         let intentMap = new Map();
         // intentMap.set('< Intent's name >', <method that will handle it>);
         intentMap.set('snoopy', snoopy);
